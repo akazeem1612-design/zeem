@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node run-e2e-prod-tests.js)"
+    ]
+  }
+}

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeem AI — Client Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        /* Client Portal Overrides */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+        }
+
+        .login-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .login-card .logo {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .login-card .badge {
+            background: rgba(34, 197, 94, .15);
+            color: var(--green);
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .login-card p {
+            color: var(--text3);
+            font-size: 14px;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .login-card .form-group {
+            text-align: left;
+        }
+
+        .login-card .btn-primary {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
+        .login-error {
+            color: var(--red);
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Portal-specific sidebar */
+        .sidebar .badge.client-badge {
+            background: rgba(34, 197, 94, .15);
+            color: var(--green);
+        }
+
+        /* Metric cards */
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .metric-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .metric-card.leads::before { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+        .metric-card.bookings::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .metric-card.rate::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+        .metric-card.speed::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+        .metric-icon {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text3);
+            font-weight: 500;
+        }
+
+        .metric-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .trend-up { background: rgba(34,197,94,.1); color: var(--green); }
+        .trend-neutral { background: rgba(245,158,11,.1); color: var(--orange); }
+
+        /* Conversation feed */
+        .convo-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .convo-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .convo-card:hover {
+            border-color: var(--accent);
+            background: rgba(124,92,252,.03);
+        }
+
+        .convo-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(124,92,252,.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .convo-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .convo-phone {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .convo-preview {
+            font-size: 13px;
+            color: var(--text3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .convo-meta {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .convo-time {
+            font-size: 12px;
+            color: var(--text3);
+            margin-bottom: 4px;
+        }
+
+        /* Booking list */
+        .booking-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .booking-date-block {
+            background: rgba(124,92,252,.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .booking-date-block .day {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent2);
+            line-height: 1;
+        }
+
+        .booking-date-block .month {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .booking-details {
+            flex: 1;
+        }
+
+        .booking-details .lead-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .booking-details .lead-info {
+            font-size: 13px;
+            color: var(--text3);
+        }
+
+        /* Pilot banner */
+        .pilot-banner {
+            background: linear-gradient(135deg, rgba(124,92,252,.08), rgba(34,197,94,.08));
+            border: 1px solid rgba(124,92,252,.2);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .pilot-banner .pilot-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .pilot-banner .pilot-info p {
+            font-size: 13px;
+            color: var(--text3);
+            margin: 0;
+        }
+
+        .pilot-days {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent2);
+        }
+
+        .pilot-days small {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text3);
+            display: block;
+        }
+
+        /* ROI Summary */
+        .roi-card {
+            background: linear-gradient(135deg, rgba(34,197,94,.06), rgba(34,197,94,.02));
+            border: 1px solid rgba(34,197,94,.15);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .roi-card h3 {
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .roi-item .roi-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--green);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .roi-item .roi-label {
+            font-size: 12px;
+            color: var(--text3);
+        }
+
+        @media (max-width: 768px) {
+            .metric-row { grid-template-columns: 1fr 1fr; }
+            .roi-grid { grid-template-columns: 1fr; }
+            .pilot-banner { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <span class="logo">⚡ zeem<span class="accent">.AI</span></span>
+            <span class="badge" style="background:rgba(34,197,94,.15);color:#22c55e;">Client Portal</span>
+            <p>Access your AI intake dashboard to see conversations, bookings, and performance metrics.</p>
+            <div class="form-group">
+                <label>Client ID</label>
+                <input type="text" id="loginClientId" class="input" placeholder="Your client ID">
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="password" id="loginApiKey" class="input" placeholder="Your access key">
+            </div>
+            <button class="btn btn-primary" id="loginBtn">Access Dashboard →</button>
+            <div class="login-error" id="loginError">Invalid credentials. Please check your Client ID and API Key.</div>
+        </div>
+    </div>
+
+    <!-- Portal (hidden until login) -->
+    <div id="portalApp" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="logo">⚡ zeem<span class="accent">.AI</span></span>
+                <span class="badge client-badge">Client</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="overview">
+                    <span class="nav-icon">📊</span> Overview
+                </a>
+                <a href="#" class="nav-item" data-view="conversations">
+                    <span class="nav-icon">💬</span> Conversations
+                </a>
+                <a href="#" class="nav-item" data-view="bookings">
+                    <span class="nav-icon">📅</span> Bookings
+                </a>
+                <a href="#" class="nav-item" data-view="settings">
+                    <span class="nav-icon">⚙️</span> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-dot"></div>
+                <span>AI Active</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview -->
+            <div class="view active" id="view-overview">
+                <h1 id="firmNameTitle">Dashboard</h1>
+
+                <div class="pilot-banner" id="pilotBanner" style="display:none;">
+                    <div class="pilot-info">
+                        <h3>🎉 Free Pilot Active</h3>
+                        <p>Your AI agent is handling leads 24/7. Upgrade anytime to continue after the pilot ends.</p>
+                    </div>
+                    <div class="pilot-days">
+                        <span id="pilotDaysLeft">14</span>
+                        <small>days left</small>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-card leads">
+                        <div class="metric-icon">💬</div>
+                        <div class="metric-value" id="mLeads">0</div>
+                        <div class="metric-label">Leads Handled</div>
+                        <div class="metric-trend trend-up">↑ AI-powered</div>
+                    </div>
+                    <div class="metric-card bookings">
+                        <div class="metric-icon">📅</div>
+                        <div class="metric-value" id="mBookings">0</div>
+                        <div class="metric-label">Consultations Booked</div>
+                    </div>
+                    <div class="metric-card rate">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-value" id="mRate">0%</div>
+                        <div class="metric-label">Booking Rate</div>
+                    </div>
+                    <div class="metric-card speed">
+                        <div class="metric-icon">⚡</div>
+                        <div class="metric-value" id="mSpeed">&lt;30s</div>
+                        <div class="metric-label">Avg Response Time</div>
+                        <div class="metric-trend trend-up">↑ 24/7 coverage</div>
+                    </div>
+                </div>
+
+                <div class="roi-card" id="roiCard">
+                    <h3>📊 Your ROI Summary</h3>
+                    <div class="roi-grid">
+                        <div class="roi-item">
+                            <div class="roi-value" id="roiBookings">0</div>
+                            <div class="roi-label">Consultations Booked</div>
+                        </div>
+                        <div class="roi-item">
+                            <div class="roi-value" id="roiRevenue">$0</div>
+                            <div class="roi-label">Est. Case Value Generated</div>
+                        </div>
+                        <div class="roi-item">
+                            <div class="roi-value" id="roiReturn">0x</div>
+                            <div class="roi-label">Return on Zeem AI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" style="margin-top:24px;">
+                    <h2>Recent Conversations</h2>
+                    <div id="recentConvos" class="convo-feed">
+                        <div class="empty-state">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversations View -->
+            <div class="view" id="view-conversations">
+                <h1>Conversations</h1>
+                <p class="view-description">All leads your AI agent has handled. Click any conversation to read the full transcript.</p>
+                <div class="panel">
+                    <div id="allConvos" class="convo-feed">
+                        <div class="empty-state">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Convo Modal -->
+                <div class="modal" id="convoModal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 id="convoTitle">Conversation</h2>
+                            <button class="modal-close" onclick="document.getElementById('convoModal').style.display='none'">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="convoMessages" class="chat-replay"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings View -->
+            <div class="view" id="view-bookings">
+                <h1>Bookings</h1>
+                <p class="view-description">All consultations booked by your AI agent.</p>
+                <div id="bookingsList">
+                    <div class="empty-state">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="view-settings">
+                <h1>Settings</h1>
+                <div class="panel">
+                    <h2>Your Account</h2>
+                    <div class="form-group">
+                        <label>Firm Name</label>
+                        <input type="text" class="input" id="settFirmName" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Practice Area</label>
+                        <input type="text" class="input" id="settPractice" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="text" class="input" id="settEmail" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Plan</label>
+                        <input type="text" class="input" id="settPlan" disabled>
+                    </div>
+                </div>
+                <div class="panel">
+                    <h2>Need Help?</h2>
+                    <p style="color:var(--text3);font-size:14px;line-height:1.7;">
+                        For questions about your AI agent, billing, or feature requests, email us at
+                        <a href="mailto:support@zeem-ai.com" style="color:var(--accent2);">support@zeem-ai.com</a>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ============================================
+        // ZEEM AI — Client Portal JavaScript
+        // ============================================
+
+        const API_BASE = '/api/admin';
+        let CLIENT_ID = null;
+        let API_KEY = null;
+
+        function getHeaders() {
+            return { 'Content-Type': 'application/json', 'X-API-Key': API_KEY };
+        }
+
+        // ---- Login ----
+        document.getElementById('loginBtn').addEventListener('click', doLogin);
+        document.getElementById('loginApiKey').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+        async function doLogin() {
+            CLIENT_ID = document.getElementById('loginClientId').value.trim();
+            API_KEY = document.getElementById('loginApiKey').value.trim();
+
+            if (!CLIENT_ID || !API_KEY) {
+                showLoginError('Please enter both Client ID and API Key.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/clients/${CLIENT_ID}`, { headers: getHeaders() });
+                if (!res.ok) throw new Error('Invalid');
+                const client = await res.json();
+
+                // Success — show portal
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('portalApp').style.display = '';
+                document.body.style.display = 'flex';
+
+                initPortal(client);
+            } catch (err) {
+                showLoginError('Invalid credentials. Please check your Client ID and API Key.');
+            }
+        }
+
+        function showLoginError(msg) {
+            const el = document.getElementById('loginError');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        // ---- Portal Init ----
+        async function initPortal(client) {
+            document.getElementById('firmNameTitle').textContent = client.firmName;
+            document.title = `${client.firmName} — Zeem AI Portal`;
+
+            // Settings
+            document.getElementById('settFirmName').value = client.firmName;
+            document.getElementById('settPractice').value = (client.practiceArea || '').replace(/-/g, ' ');
+            document.getElementById('settEmail').value = client.contactEmail || '';
+            document.getElementById('settPlan').value = (client.plan || 'pilot').charAt(0).toUpperCase() + (client.plan || 'pilot').slice(1);
+
+            // Pilot banner
+            if (client.pilotEndDate) {
+                const daysLeft = Math.max(0, Math.ceil((new Date(client.pilotEndDate) - new Date()) / (1000 * 60 * 60 * 24)));
+                document.getElementById('pilotBanner').style.display = 'flex';
+                document.getElementById('pilotDaysLeft').textContent = daysLeft;
+            }
+
+            loadOverview(client);
+        }
+
+        // ---- Overview ----
+        async function loadOverview(client) {
+            try {
+                const [convosRes, bookingsRes] = await Promise.all([
+                    fetch(`${API_BASE}/conversations`, { headers: getHeaders() }),
+                    fetch(`${API_BASE}/bookings`, { headers: getHeaders() }),
+                ]);
+
+                const convosData = await convosRes.json();
+                const bookingsData = await bookingsRes.json();
+
+                // Filter to this client only
+                const convos = convosData.conversations || [];
+                const bookings = (bookingsData.bookings || []).filter(b => b.clientId === CLIENT_ID);
+
+                // Metrics
+                document.getElementById('mLeads').textContent = convos.length;
+                document.getElementById('mBookings').textContent = bookings.length;
+                const rate = convos.length > 0 ? Math.round((bookings.length / convos.length) * 100) : 0;
+                document.getElementById('mRate').textContent = rate + '%';
+
+                // ROI
+                const avgCaseValue = 5000; // Conservative estimate
+                document.getElementById('roiBookings').textContent = bookings.length;
+                document.getElementById('roiRevenue').textContent = '$' + (bookings.length * avgCaseValue).toLocaleString();
+                const monthlyCost = 397;
+                const roi = monthlyCost > 0 ? Math.round((bookings.length * avgCaseValue) / monthlyCost) : 0;
+                document.getElementById('roiReturn').textContent = roi + 'x';
+
+                // Recent conversations
+                renderConvoFeed('recentConvos', convos.slice(0, 5));
+
+                // Store for other views
+                window._convos = convos;
+                window._bookings = bookings;
+            } catch (err) {
+                console.error('Load overview error:', err);
+            }
+        }
+
+        // ---- Conversations ----
+        function renderConvoFeed(elementId, convos) {
+            const el = document.getElementById(elementId);
+            if (convos.length === 0) {
+                el.innerHTML = '<div class="empty-state">No conversations yet. Your AI agent is standing by for incoming leads!</div>';
+                return;
+            }
+
+            el.innerHTML = convos.map(c => `
+                <div class="convo-card" onclick="openConvo('${c.phoneNumber}')">
+                    <div class="convo-avatar">${c.status === 'booked' ? '📅' : c.status === 'stopped' ? '🛑' : '💬'}</div>
+                    <div class="convo-info">
+                        <div class="convo-phone">${c.phoneNumber}</div>
+                        <div class="convo-preview">${(c.lastMessage || 'No messages').substring(0, 80)}</div>
+                    </div>
+                    <div class="convo-meta">
+                        <div class="convo-time">${new Date(c.updatedAt).toLocaleDateString()}</div>
+                        <span class="status-badge status-${c.status}">${c.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function openConvo(phone) {
+            try {
+                const res = await fetch(`${API_BASE}/conversations/${encodeURIComponent(phone)}`, { headers: getHeaders() });
+                const convo = await res.json();
+
+                document.getElementById('convoTitle').textContent = `Conversation with ${phone}`;
+                document.getElementById('convoMessages').innerHTML = convo.messages.map(m => `
+                    <div class="replay-msg ${m.role}">
+                        ${m.content}
+                        <div class="replay-time">${new Date(m.timestamp).toLocaleTimeString()}</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('convoModal').style.display = 'flex';
+            } catch (err) {
+                console.error('Failed to load conversation:', err);
+            }
+        }
+
+        // ---- Bookings ----
+        function renderBookings() {
+            const bookings = window._bookings || [];
+            const el = document.getElementById('bookingsList');
+
+            if (bookings.length === 0) {
+                el.innerHTML = '<div class="empty-state panel">No bookings yet. When your AI agent books a consultation, it will appear here.</div>';
+                return;
+            }
+
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            el.innerHTML = bookings.map(b => {
+                const d = new Date(b.date);
+                return `
+                    <div class="booking-card">
+                        <div class="booking-date-block">
+                            <div class="day">${d.getDate()}</div>
+                            <div class="month">${months[d.getMonth()]}</div>
+                        </div>
+                        <div class="booking-details">
+                            <div class="lead-name">${b.leadName}</div>
+                            <div class="lead-info">📞 ${b.leadPhone} · 🕐 ${b.time} · ${(b.practiceArea || '').replace(/-/g, ' ')}</div>
+                        </div>
+                        <span class="status-badge status-booked">${b.status}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ---- Navigation ----
+        document.querySelectorAll('#portalApp .nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const view = item.dataset.view;
+
+                document.querySelectorAll('#portalApp .nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                document.querySelectorAll('#portalApp .view').forEach(v => v.classList.remove('active'));
+                document.getElementById(`view-${view}`).classList.add('active');
+
+                if (view === 'conversations') renderConvoFeed('allConvos', window._convos || []);
+                if (view === 'bookings') renderBookings();
+            });
+        });
+    </script>
+</body>
+
+</html>

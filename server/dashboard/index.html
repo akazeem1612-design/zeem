@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeem AI — Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo">⚡ zeem<span class="accent">.AI</span></span>
+            <span class="badge">Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="overview">
+                <span class="nav-icon">📊</span> Overview
+            </a>
+            <a href="#" class="nav-item" data-view="conversations">
+                <span class="nav-icon">💬</span> Conversations
+            </a>
+            <a href="#" class="nav-item" data-view="bookings">
+                <span class="nav-icon">📅</span> Bookings
+            </a>
+            <a href="#" class="nav-item" data-view="clients">
+                <span class="nav-icon">🏢</span> Clients
+            </a>
+            <a href="#" class="nav-item" data-view="simulate">
+                <span class="nav-icon">🧪</span> Test AI
+            </a>
+            <a href="#" class="nav-item" data-view="outreach">
+                <span class="nav-icon">🚀</span> Outreach
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="status-dot"></div>
+            <span>System Online</span>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview View -->
+        <div class="view active" id="view-overview">
+            <h1>Dashboard</h1>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-label">Active Clients</div>
+                    <div class="stat-value" id="statClients">-</div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-label">Total Bookings</div>
+                    <div class="stat-value" id="statBookings">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Conversations</div>
+                    <div class="stat-value" id="statConversations">-</div>
+                </div>
+                <div class="stat-card money">
+                    <div class="stat-label">Est. Monthly Revenue</div>
+                    <div class="stat-value" id="statRevenue">-</div>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>Recent Activity</h2>
+                <div id="recentActivity" class="activity-list">
+                    <div class="empty-state">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversations View -->
+        <div class="view" id="view-conversations">
+            <h1>Conversations</h1>
+            <div class="panel">
+                <div id="conversationsList" class="table-wrap">
+                    <div class="empty-state">Loading conversations...</div>
+                </div>
+            </div>
+            <!-- Conversation Detail Modal -->
+            <div class="modal" id="convoModal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="convoModalTitle">Conversation</h2>
+                        <button class="modal-close"
+                            onclick="document.getElementById('convoModal').style.display='none'">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="convoModalMessages" class="chat-replay"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings View -->
+        <div class="view" id="view-bookings">
+            <h1>Bookings</h1>
+            <div class="panel">
+                <div id="bookingsList" class="table-wrap">
+                    <div class="empty-state">Loading bookings...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients View -->
+        <div class="view" id="view-clients">
+            <h1>Clients</h1>
+            <div class="panel">
+                <div id="clientsList" class="table-wrap">
+                    <div class="empty-state">Loading clients...</div>
+                </div>
+                <button class="btn btn-primary" id="addClientBtn" style="margin-top:16px;">+ Add Client</button>
+            </div>
+        </div>
+
+        <!-- Test AI View -->
+        <div class="view" id="view-simulate">
+            <h1>Test AI 🧪</h1>
+            <p class="view-description">Simulate a conversation with the AI without sending real SMS. Test how it
+                handles different scenarios.</p>
+            <div class="simulate-layout">
+                <div class="simulate-config">
+                    <div class="form-group">
+                        <label>Client</label>
+                        <select id="simClient" class="input"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lead Phone (simulated)</label>
+                        <input type="text" id="simPhone" class="input" value="+15559999999">
+                    </div>
+                    <button class="btn btn-outline" id="simNewLead">📲 Simulate New Lead</button>
+                    <button class="btn btn-outline" id="simReset" style="margin-top:8px;">🔄 Reset Conversation</button>
+                </div>
+                <div class="simulate-chat">
+                    <div class="sim-messages" id="simMessages">
+                        <div class="empty-state">Select a client and start testing</div>
+                    </div>
+                    <div class="sim-input-area">
+                        <input type="text" id="simInput" class="input" placeholder="Type a message as the lead...">
+                        <button class="btn btn-primary" id="simSend">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Outreach View -->
+        <div class="view" id="view-outreach">
+            <h1>Outreach 🚀</h1>
+            <p class="view-description">AI-powered prospect discovery, email generation, and campaign management.</p>
+
+            <!-- Outreach Stats -->
+            <div class="stats-grid outreach-stats-grid" id="outreachStatsGrid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Prospects</div>
+                    <div class="stat-value" id="outTotal">-</div>
+                </div>
+                <div class="stat-card highlight">
+                    <div class="stat-label">Emails Sent</div>
+                    <div class="stat-value" id="outSent">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Replied</div>
+                    <div class="stat-value" id="outReplied">-</div>
+                </div>
+                <div class="stat-card money">
+                    <div class="stat-label">Interested</div>
+                    <div class="stat-value" id="outInterested">-</div>
+                </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="outreach-actions panel">
+                <div class="outreach-actions-row">
+                    <div class="finder-group">
+                        <input type="text" id="outCity" class="input" placeholder="City, State (e.g. Houston, TX)"
+                            style="max-width:260px;">
+                        <button class="btn btn-primary" id="outFindBtn">🔍 Find Prospects</button>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" id="outEnrichBtn">🔎 Enrich All</button>
+                        <button class="btn btn-outline" id="outGenAllBtn">✍️ Generate All Emails</button>
+                        <button class="btn btn-outline" id="outSendBatchBtn">📨 Send Batch</button>
+                        <button class="btn btn-outline" id="outAddBtn">+ Add Prospect</button>
+                    </div>
+                </div>
+                <div id="outActionStatus" class="action-status" style="display:none;"></div>
+            </div>
+
+            <!-- Pipeline -->
+            <div class="pipeline-bar" id="pipelineBar">
+                <div class="pipe-seg pipe-new" id="pipeNew" title="New">0</div>
+                <div class="pipe-seg pipe-emailed" id="pipeEmailed" title="Emailed">0</div>
+                <div class="pipe-seg pipe-replied" id="pipeReplied" title="Replied">0</div>
+                <div class="pipe-seg pipe-interested" id="pipeInterested" title="Interested">0</div>
+                <div class="pipe-seg pipe-client" id="pipeClient" title="Client">0</div>
+            </div>
+            <div class="pipeline-labels">
+                <span>New</span><span>Emailed</span><span>Replied</span><span>Interested</span><span>Client ✨</span>
+            </div>
+
+            <!-- Prospects Table -->
+            <div class="panel">
+                <h2>Prospects</h2>
+                <div class="outreach-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="new">New</button>
+                    <button class="filter-btn" data-filter="emailed">Emailed</button>
+                    <button class="filter-btn" data-filter="replied">Replied</button>
+                    <button class="filter-btn" data-filter="interested">Interested</button>
+                    <button class="filter-btn" data-filter="client">Client</button>
+                </div>
+                <div id="prospectsList" class="table-wrap">
+                    <div class="empty-state">No prospects yet — use "Find Prospects" to get started</div>
+                </div>
+            </div>
+
+            <!-- Email Preview Modal -->
+            <div class="modal" id="emailModal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="emailModalTitle">Email Preview</h2>
+                        <button class="modal-close"
+                            onclick="document.getElementById('emailModal').style.display='none'">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="email-preview">
+                            <div class="email-field"><strong>Subject:</strong> <span id="emailSubject"></span></div>
+                            <div class="email-field"><strong>To:</strong> <span id="emailTo"></span></div>
+                            <div class="email-body" id="emailBody"></div>
+                            <h3 style="margin-top:20px;font-size:14px;color:var(--text3);">Follow-up Sequence</h3>
+                            <div class="followup-preview">
+                                <div class="followup-item"><strong>Day 3:</strong> <span id="followUp1"></span></div>
+                                <div class="followup-item"><strong>Day 7:</strong> <span id="followUp2"></span></div>
+                                <div class="followup-item"><strong>Day 14:</strong> <span id="followUp3"></span></div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px;display:flex;gap:8px;">
+                            <button class="btn btn-primary" id="emailSendBtn">📨 Send This Email</button>
+                            <button class="btn btn-outline"
+                                onclick="document.getElementById('emailModal').style.display='none'">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Prospect Modal -->
+            <div class="modal" id="addProspectModal" style="display:none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Add Prospect</h2>
+                        <button class="modal-close"
+                            onclick="document.getElementById('addProspectModal').style.display='none'">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group"><label>Firm Name *</label><input type="text" id="addFirmName"
+                                class="input"></div>
+                        <div class="form-group"><label>Contact Name</label><input type="text" id="addContactName"
+                                class="input"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="addEmail" class="input">
+                        </div>
+                        <div class="form-group"><label>Phone</label><input type="text" id="addPhone" class="input">
+                        </div>
+                        <div class="form-group"><label>City</label><input type="text" id="addCity" class="input"></div>
+                        <div class="form-group"><label>Website</label><input type="text" id="addWebsite" class="input">
+                        </div>
+                        <button class="btn btn-primary" id="addProspectSaveBtn" style="width:100%;margin-top:8px;">Save
+                            Prospect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
