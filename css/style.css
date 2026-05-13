@@ -1209,7 +1209,19 @@ img {
 .pricing-period {
     font-size: 14px;
     color: var(--text-muted);
-    margin-bottom: 28px;
+    margin-bottom: 12px;
+}
+
+.pricing-qualifier {
+    font-size: 13px;
+    font-style: italic;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
 }
 
 .pricing-features {
