@@ -8,6 +8,7 @@
     "dev": "node --watch --watch-path=src src/index.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.1",
     "@googleapis/calendar": "^14.2.0",
     "@supabase/supabase-js": "^2.104.0",
     "cors": "^2.8.5",

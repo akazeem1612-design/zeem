@@ -10,6 +10,13 @@ server/node_modules/
 # Runtime data
 server/data/
 
+# Build and Runtime outputs
+.next/
+.wrangler/
+.sites-runtime/
+dist/
+build/
+
 # Logs
 *.log
 npm-debug.log*
