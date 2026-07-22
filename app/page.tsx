@@ -203,56 +203,79 @@ export default function Home() {
       <section id="pricing" className="section shell pricing">
         <div className="section-head">
           <div>
-            <p className="kicker">ZERO RISK. PROVE VALUE FIRST.</p>
+            <p className="kicker">TRANSPARENT PRICING • LIMITED TIME OFFER</p>
             <h2 className="display section-title">
-              Start with a 14-Day Free Pilot.
+              Solutions starting at <em>$150 / month.</em>
             </h2>
           </div>
-          <p>No upfront setup fee. No long-term contracts. We set up your number and prove the value on your real missed calls.</p>
+          <p>
+            Zero upfront setup fee for a limited time. No long-term contracts. We configure your number and start capturing missed calls in under 24 hours.
+          </p>
         </div>
 
         <div className="pricing-cards-grid">
           <article className="price-card">
-            <div className="price-badge">100% RISK-FREE</div>
-            <h3>14-Day Free Pilot</h3>
+            <div className="price-badge">STARTER PLAN</div>
+            <h3>Solo &amp; Small Trades</h3>
             <div className="price-amount">
-              <strong>$0</strong>
-              <span>for 14 days</span>
+              <strong>$150</strong>
+              <span>/month</span>
             </div>
+            <small className="price-note">⚡ Limited Time: <strong>$0 Setup Fee</strong> (Save $497)</small>
             <ul>
               <li>✓ Custom AI dispatcher for your trade</li>
-              <li>✓ Up to 100 missed calls handled</li>
-              <li>✓ Instant &lt;30s SMS text-back</li>
-              <li>✓ Automated appointment booking</li>
-              <li>✓ $0 setup fee & no credit card required</li>
+              <li>✓ Instant &lt;30s SMS text-back on missed calls</li>
+              <li>✓ Automated appointment &amp; calendar booking</li>
+              <li>✓ Basic trade diagnostic intake</li>
+              <li>✓ Up to 100 missed calls handled / mo</li>
             </ul>
             <Link className="button button-secondary" href="#request-demo">
-              Start Free Pilot ↗
+              Book Free Consultation ↗
             </Link>
           </article>
 
           <article className="price-card featured">
-            <div className="price-badge">FOUNDING PARTNERSHIP</div>
-            <h3>Founding Partner Plan</h3>
+            <div className="price-badge highlight">MOST POPULAR • $0 SETUP OFFER</div>
+            <h3>Pro Dispatcher</h3>
             <div className="price-amount">
-              <strong>$1,497</strong>
+              <strong>$497</strong>
               <span>/month</span>
             </div>
-            <small className="price-note">Flat monthly rate • Cancel anytime • No per-job fees</small>
+            <small className="price-note">⚡ Limited Time: <strong>$0 Setup Fee</strong> • Cancel anytime</small>
             <ul>
-              <li>✓ Everything in Free Pilot</li>
-              <li>✓ Unlimited missed call handling</li>
-              <li>✓ ServiceTitan / Housecall Pro integration</li>
-              <li>✓ Custom diagnostic & dispatch rules</li>
+              <li>✓ Everything in Starter Plan</li>
+              <li>✓ Unlimited missed call intake &amp; text-back</li>
+              <li>✓ ServiceTitan / Housecall Pro / Jobber sync</li>
+              <li>✓ Custom diagnostic &amp; dispatch rules</li>
               <li>✓ Dispatch fee collection</li>
-              <li>✓ Dedicated account manager</li>
+              <li>✓ Dedicated account manager &amp; setup support</li>
             </ul>
             <Link className="button button-primary" href="#request-demo">
-              Claim Pilot &amp; Lock Partner Rate ↗
+              Book Free Consultation ↗
+            </Link>
+          </article>
+
+          <article className="price-card">
+            <div className="price-badge">ENTERPRISE FLEET</div>
+            <h3>Multi-Location Fleet</h3>
+            <div className="price-amount">
+              <strong>Custom</strong>
+            </div>
+            <small className="price-note">Tailored SLA &amp; Dedicated Infrastructure</small>
+            <ul>
+              <li>✓ Everything in Pro Dispatcher</li>
+              <li>✓ Multi-number &amp; multi-location routing</li>
+              <li>✓ Custom CRM &amp; Voip API integration</li>
+              <li>✓ Custom AI voice &amp; SMS agent training</li>
+              <li>✓ 99.9% uptime SLA guarantee</li>
+            </ul>
+            <Link className="button button-outline" href="#request-demo">
+              Book Free Consultation ↗
             </Link>
           </article>
         </div>
       </section>
+
 
       {/* Request Demo / Onboarding Form */}
       <section id="request-demo" className="section request-section">
