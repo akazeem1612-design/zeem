@@ -365,46 +365,247 @@ button, input, select, textarea {
   transform: translateY(-2px);
 }
 
-/* Hero Flow Diagram */
-.flow {
-  height: 600px;
-  position: relative;
+/* Hero Flow Live Orchestration Card */
+.flow-card {
+  border: 1px solid rgba(70, 230, 207, 0.3);
+  border-radius: 24px;
+  background: linear-gradient(155deg, rgba(14, 23, 26, 0.95), rgba(7, 12, 14, 0.98));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 0 40px rgba(70, 230, 207, 0.08);
   overflow: hidden;
-  border: 1px solid rgba(147, 194, 188, 0.35);
-  border-radius: 20px;
-  background: linear-gradient(155deg, rgba(16, 26, 29, 0.95), rgba(5, 10, 12, 0.98));
-  box-shadow: 0 40px 110px rgba(0, 0, 0, 0.6);
 }
 
-.flow-bar {
-  height: 55px;
-  position: relative;
-  z-index: 2;
-  border-bottom: 1px solid rgba(147, 194, 188, 0.2);
+.flow-card-header {
+  height: 52px;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  color: #9eafae;
-  font-size: 10px;
-  letter-spacing: .16em;
 }
 
-.flow-bar i {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 10px;
+.flow-status-live {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+}
+
+.live-pulse {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--teal);
   box-shadow: 0 0 14px var(--teal);
+  animation: pulse 1.8s infinite;
 }
 
-.status {
-  padding: 6px 12px;
-  border: 1px solid rgba(147, 194, 188, 0.25);
-  border-radius: 12px;
+.flow-timer-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 1px solid rgba(70, 230, 207, 0.3);
+  border-radius: 14px;
+  background: rgba(70, 230, 207, 0.08);
+  color: var(--teal);
+  font-size: 11px;
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.1em;
 }
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--teal);
+}
+
+.flow-card-body {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.flow-chat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flow-msg {
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.flow-msg.user-msg {
+  background: rgba(14, 22, 25, 0.8);
+  color: #d6e0e0;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.flow-msg.agent-msg {
+  background: linear-gradient(135deg, rgba(22, 127, 119, 0.35), rgba(12, 57, 54, 0.45));
+  border-color: rgba(70, 230, 207, 0.4);
+  color: white;
+  align-self: flex-end;
+  width: 100%;
+}
+
+.flow-msg-tag {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.flow-msg-tag.agent-tag {
+  color: var(--teal);
+}
+
+.flow-msg p {
+  margin: 0;
+}
+
+.flow-msg time {
+  display: block;
+  font-size: 9px;
+  opacity: 0.7;
+  text-align: right;
+  margin-top: 6px;
+}
+
+.flow-badge-qualified {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(70, 230, 207, 0.4);
+  background: rgba(70, 230, 207, 0.08);
+  border-radius: 12px;
+  margin: 4px 0;
+}
+
+.badge-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  background: rgba(70, 230, 207, 0.15);
+}
+
+.flow-badge-qualified strong {
+  display: block;
+  font-size: 14px;
+  color: white;
+}
+
+.flow-badge-qualified small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.flow-booking-column {
+  display: flex;
+}
+
+.booking-card-inner {
+  width: 100%;
+  padding: 24px;
+  border: 1px solid rgba(203, 181, 138, 0.4);
+  background: linear-gradient(150deg, rgba(29, 28, 24, 0.95), rgba(13, 16, 16, 0.98));
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+
+.booking-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: rgba(203, 181, 138, 0.12);
+  margin-bottom: 12px;
+}
+
+.booking-eyebrow {
+  display: block;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+.booking-title {
+  font: 400 24px Georgia, serif;
+  color: white;
+  margin: 6px 0 18px;
+}
+
+.booking-details-list {
+  width: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.booking-detail-row span {
+  color: var(--muted);
+}
+
+.booking-detail-row strong {
+  color: var(--ivory);
+}
+
+.booking-detail-row .status-success {
+  color: var(--teal);
+}
+
+.booking-sync-badge {
+  margin-top: 18px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: rgba(70, 230, 207, 0.08);
+  border: 1px solid rgba(70, 230, 207, 0.25);
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 500;
+}
+
 
 /* The Problem / Loss Cards */
 .quiet {
